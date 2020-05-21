@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <input type="text" id="textt" >
+        <input type="submit"  onmouseover=" e(this)" ></button> 
+        </form>
+       
+</body>
+    <script>
+        let socket = new WebSocket("ws://localhost:5500/ws");
+        console.log("Attempting Connection...");
+        
+        socket.onopen=function()
+{
+    socket.send("welldone");
+};
+var i=0;
+
+document.getElementById("textt").addEventListener("keyup" , function(){
+ var t=document.getElementById("textt").value;
+ 
+  var d=t.charAt(i);
+  if(d==""){
+      i=i-1;
+  }
+  else
+  {
+   socket.send(d);
+    i++;
+  }
+});
+function e()
+{
+   var t= document.getElementById("textt").value;
+   socket.send(t);
+
+}
+
+
+    </script>
+</body>
+</html>
