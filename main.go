@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"text/template"
 
 	"github.com/gorilla/websocket"
@@ -72,23 +73,18 @@ func reader(conn *websocket.Conn) {
 
 // display of teacher//
 
-func agg(w http.ResponseWriter, r *http.Request) {
+func agg() {
 	p := Display{Rollno: 1,
 		Totalwords:     1,
 		Totalcharacter: y,
 		Wordsminute:    5}
-	t, er := template.ParseFiles("basic.html")
-	if er != nil {
-		fmt.Println(er)
-	}
-	t.Execute(w, p)
+	t, _ := template.ParseFiles("basic.html")
+	t.Execute(os.Stdout, p)
 }
-
 func setupRoutes() {
-	http.HandleFunc("/", agg)
 
 	http.HandleFunc("/ws", wsEndpoint)
-
+	go agg()
 }
 
 func main() {
